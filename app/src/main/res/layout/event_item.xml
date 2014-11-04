@@ -11,6 +11,7 @@
         android:id="@+id/event_text"
         android:layout_alignParentLeft="true"
         android:text="Tiger's Game"
+        android:textSize="@dimen/event_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
@@ -19,6 +20,7 @@
         android:layout_alignEnd="@id/event_text"
         android:layout_alignParentRight="true"
         android:text="4:00pm"
+        android:textSize="@dimen/event_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
