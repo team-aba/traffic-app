@@ -6,17 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import java.util.ArrayList;
 
 
 public class ListViewFragment extends Fragment {
     ListView mListOfEvents;
-    ArrayAdapter mArrayAdapter;
-    ArrayList<Events> listOfEventsToday;
-
 
 
 /*    public static ListViewFragment newInstance(String param1, String param2) {
@@ -39,8 +33,8 @@ public class ListViewFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_list_view, container, false);
         mListOfEvents = (ListView) rootView.findViewById(R.id.list_view_of_events);
 
-        listOfEventsToday = new ArrayList<String>();
 
+        return rootView;
     }
 
 
