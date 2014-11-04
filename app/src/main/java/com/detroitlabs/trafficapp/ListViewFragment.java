@@ -8,9 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 
 public class ListViewFragment extends Fragment {
     ListView mListOfEvents;
+    ArrayList<Events> mEventsArrayList = new ArrayList<Events>();
+
 
 
 /*    public static ListViewFragment newInstance(String param1, String param2) {
@@ -38,11 +42,14 @@ public class ListViewFragment extends Fragment {
     }
 
 
-    public static class CheckEventsUpcoming extends AsyncTask<Void, Void, Void>{
+    public static class CheckEventsUpcoming extends AsyncTask<String, Void, String>{
 
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected String doInBackground(String... strings) {
+
+            final static String URI_BASE = 
+
             return null;
         }
 
