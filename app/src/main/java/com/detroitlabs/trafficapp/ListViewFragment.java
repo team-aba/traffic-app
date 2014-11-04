@@ -15,13 +15,8 @@ import java.util.ArrayList;
 public class ListViewFragment extends Fragment {
     ListView mListOfEvents;
     ArrayAdapter mArrayAdapter;
-    ArrayList<String> listOfEventsToday;
-    ArrayList<String> listOfEventsTomorrow;
-    ArrayList<String> listOfEventsDay3;
-    ArrayList<String> listOfEventsDay4;
-    ArrayList<String> listOfEventsDay5;
-    ArrayList<String> listOfEventsDay6;
-    ArrayList<String> listOfEventsDay7;
+    ArrayList<Events> listOfEventsToday;
+
 
 
 /*    public static ListViewFragment newInstance(String param1, String param2) {

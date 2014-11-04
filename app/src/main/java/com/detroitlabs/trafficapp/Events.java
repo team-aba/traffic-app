@@ -5,10 +5,12 @@ package com.detroitlabs.trafficapp;
  */
 public class Events {
     String eventName;
+    String eventDate;
     String eventStartTime;
 
-    public Events(String eventName, String eventStartTime){
+    public Events(String eventName, String eventDate, String eventStartTime){
         this.eventName = eventName;
+        this.eventDate = eventDate;
         this.eventStartTime = eventStartTime;
     }
 
@@ -26,5 +28,13 @@ public class Events {
 
     public void setEventStartTime(String eventStartTime) {
         this.eventStartTime = eventStartTime;
+    }
+
+    public String getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(String eventDate) {
+        this.eventDate = eventDate;
     }
 }
