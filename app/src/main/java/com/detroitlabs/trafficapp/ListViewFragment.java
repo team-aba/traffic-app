@@ -28,7 +28,7 @@ import java.util.Calendar;
 public class ListViewFragment extends Fragment {
     ListView mListOfEvents;
     ArrayList<Events> mEventsArrayList = new ArrayList<Events>();
-    Calendar currentCal = Calendar.getInstance();
+
 
 
 
@@ -56,15 +56,44 @@ public class ListViewFragment extends Fragment {
         return rootView;
     }
 
+    public void updateEvents(){
+        String dateToRange = "";
+         Calendar currentCal = Calendar.getInstance();
 
-    public static class CheckEventsUpcoming extends AsyncTask<String, Void, String>{
+
+        String todayDate = yearToday + monthToday + today + "00";
+
+        currentCal.add(Calendar.WEEK_OF_YEAR, 1);
+
+        String year1Week = String.valueOf(currentCal.get(Calendar.YEAR));
+        String day1Week = String.valueOf(currentCal.get(Calendar.DATE));
+        String month1Week = String.valueOf(currentCal.get(Calendar.MONTH));
+
+        String dateIn1Week = year1Week + month1Week + day1Week + "00";
+
+        dateToRange = todayDate + "-" + dateIn1Week;
+
+
+
+
+    }
+
+    public String getDateInString(Calendar calendar){
+        String yearToday = String.valueOf(calendar.get(Calendar.YEAR));
+        String today = String.valueOf(calendar.get(Calendar.DATE));
+        String monthToday = String.valueOf(calendar.get(Calendar.MONTH));
+    }
+
+
+    public class CheckEventsUpcoming extends AsyncTask<String, Void, Void>{
 
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected Void doInBackground(String... strings) {
 
             final String MALFORMED_URL_ERROR = "Malformed Url Exception";
             final String IO_EXCEPTION_ERROR = "IO Exception";
+            final String JSON_EXCEPTION_ERROR = "JSON Exception";
             HttpURLConnection mHttpURLConnection = null;
             BufferedReader mBufferedReader = null;
             String jsonString =  null;
@@ -122,14 +151,18 @@ public class ListViewFragment extends Fragment {
                     }
                 }
             }
+            try {
 
-
+                createEventsFromJSONData(jsonString);
+            }catch(JSONException e){
+                Log.e(JSON_EXCEPTION_ERROR, e.getMessage());
+            }
 
             return null;
         }
 
 
-        private ArrayList<Events> createEventsFromJSONData(String jsondata) throws JSONException{
+        private void createEventsFromJSONData(String jsondata) throws JSONException{
 
             final String EVENTFUL_LIST = "events";
             final String START_TIME = "start_time";
@@ -138,24 +171,30 @@ public class ListViewFragment extends Fragment {
             JSONObject jsonObject = new JSONObject(jsondata);
             JSONArray arrayOfEvents = jsonObject.getJSONArray(EVENTFUL_LIST);
             for(int i = 0; i < arrayOfEvents.length(); i++){
-                String title;
-                int date;
-                int startTime;
 
+                String title;
+                String date;
+
+                JSONObject eventObject = arrayOfEvents.getJSONObject(i);
+                title = eventObject.getString(EVENT_TITLE);
+                date = eventObject.getString(START_TIME);
+                Events anEvent = new Events(title, date);
+                mEventsArrayList.add(anEvent);
 
             }
 
-        }
-
-        private String getDate(long dateAndTime){
 
         }
 
+
+/*
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
         }
+*/
+
     }
 
 

@@ -1,17 +1,18 @@
 package com.detroitlabs.trafficapp;
 
-import java.util.Date;
-
 /**
  * Created by BFineRocks on 11/4/14.
  */
 public class Events {
     String eventName;
-    Date date;
+    String date;
+    int eventDate;
+    int eventStartTime;
 
-    public Events(String eventName, Date date){
+    public Events(String eventName, String date){
         this.eventName = eventName;
         this.date = date;
+
     }
 
     public String getEventName() {
@@ -23,11 +24,11 @@ public class Events {
     }
 
 
-    public Date getDate(){
+    public String getDate(){
         return date;
     }
 
-    public void setDate(Date date){
+    public void setDate(String date){
         this.date = date;
     }
 }
