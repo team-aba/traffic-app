@@ -2,6 +2,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="event_text">30sp</dimen>
-    <dimen name="event_time">40sp</dimen>
+    <dimen name="text_padding">10dp</dimen>
+    <dimen name="day_of_week_text">20sp</dimen>
+    <dimen name="event_text">25sp</dimen>
+    <dimen name="event_time">30sp</dimen>
 </resources>
