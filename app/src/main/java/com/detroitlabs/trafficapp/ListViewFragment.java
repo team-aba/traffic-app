@@ -220,9 +220,10 @@ public class ListViewFragment extends Fragment {
                 Events anEvent = new Events(title, time);
                 mEventsArrayList.add(anEvent);
                 Log.i("eventAddedToArrayList", mEventsArrayList.get(i).getEventName());
+
             }
 
-
+            mEventArrayAdapter.addAll(mEventsArrayList);
             //Log.i("eventsAdded", mEventsArrayList.get(i).getEventName());
 
         }

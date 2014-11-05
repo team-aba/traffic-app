@@ -1,6 +1,7 @@
 package com.detroitlabs.trafficapp;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public class EventArrayAdapter extends ArrayAdapter<Events>{
 
     public EventArrayAdapter(Context context, ArrayList<Events> thisWeeksEvents) {
         super(context, R.layout.event_item, thisWeeksEvents);
+        Log.d("ViewCalled", "array started");
         this.mContext = context;
     }
 
@@ -30,7 +32,7 @@ public class EventArrayAdapter extends ArrayAdapter<Events>{
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View thisRow = inflater.inflate(R.layout.event_item, parent, false);
         Events thisObject = getItem(position);
-
+        Log.d("ViewCalled", "view is called");
         thisWeeksEvents = ListViewFragment.mEventsArrayList;
 
         TextView eventTitle = (TextView) thisRow.findViewById(R.id.event_text);
