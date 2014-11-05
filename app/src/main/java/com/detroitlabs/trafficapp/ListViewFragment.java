@@ -34,6 +34,7 @@ public class ListViewFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        updateEvents();
         mEventArrayAdapter = new EventArrayAdapter(getActivity(), mEventsArrayList);
     }
 
@@ -43,7 +44,7 @@ public class ListViewFragment extends Fragment {
             args.putString(ARG_PARAM1, param1);
             args.putString(ARG_PARAM2, param2);
             fragment.setArguments(args);
-            return fragment;
+            return fragment
         }*/
     public ListViewFragment() {
         // Required empty public constructor
@@ -53,7 +54,8 @@ public class ListViewFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        updateEvents();
+      //  updateEvents();
+
     }
 
     @Override
@@ -179,7 +181,8 @@ public class ListViewFragment extends Fragment {
             JSONObject eventsObject = jsonObject.getJSONObject("events");
             Log.i("eventsData", eventsObject.toString());
             JSONArray arrayOfEvents = eventsObject.getJSONArray(EVENTFUL_LIST);
-            String[][] eventsArray = new String[2][arrayOfEvents.length()];
+            String[][] eventsArray = new String[arrayOfEvents.length()][2];
+
             for(int i = 0; i < arrayOfEvents.length(); i++){
 
                 String title;
@@ -187,11 +190,11 @@ public class ListViewFragment extends Fragment {
                 int j = 0;
                 JSONObject eventObject = arrayOfEvents.getJSONObject(i);
                 title = eventObject.getString(EVENT_TITLE);
-                eventsArray[j][i] = title;
-                Log.i("eventsArray", eventsArray[j][i]);
+                eventsArray[i][j] = title;
+                Log.i("eventsArray", eventsArray[i][j]);
                 j++;
                 date = eventObject.getString(START_TIME);
-                eventsArray[j][i] = date;
+                eventsArray[i][j] = date;
 
 
             }
@@ -206,15 +209,17 @@ public class ListViewFragment extends Fragment {
             super.onPostExecute(events);
             String title = "";
             String time = "";
+            Log.i("eventsLength", String.valueOf(events.length));
             for(int i = 0; i < events.length; i++) {
                 int j = 0;
-                title = events[j][i];
+                title = events[i][j];
                 Log.i("eventTitle", title);
-                time = events[j+1][i];
+                time = events[i][j+1];
                 Log.i("eventTime", time);
 
                 Events anEvent = new Events(title, time);
                 mEventsArrayList.add(anEvent);
+                Log.i("eventAddedToArrayList", mEventsArrayList.get(i).getEventName());
             }
 
 
