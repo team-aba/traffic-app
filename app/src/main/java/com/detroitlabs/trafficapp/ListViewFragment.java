@@ -73,7 +73,7 @@ public class ListViewFragment extends Fragment {
     public void updateEvents(){
          Calendar currentCal = Calendar.getInstance();
          String todayDate = getDateInString(currentCal);
-        currentCal.add(Calendar.WEEK_OF_YEAR, 1);
+        currentCal.add(Calendar.WEEK_OF_MONTH, 8);
         String dateIn1Week = getDateInString(currentCal);
 
         String dateToRange = todayDate + "-" + dateIn1Week;
@@ -103,7 +103,8 @@ public class ListViewFragment extends Fragment {
             BufferedReader mBufferedReader = null;
             String jsonString =  null;
 
-            final String URI_BASE = "http://api.eventful.com/json/events/search?app_key=vc57D4w3FMkJfN4r&location=42.335533,-83.0491771&within=30&units=mi";
+            final String URI_BASE = "http://api.eventful.com/json/events/search?app_key=vc57D4w3FMkJfN4r"
+                    + "&category=sports&location=42.335533,-83.0491771&within=05&units=mi";
             final String PARAM_DATE = "date";
 
             Log.i("date", strings[0]);
@@ -207,6 +208,11 @@ public class ListViewFragment extends Fragment {
         @Override
         protected void onPostExecute(String[][] events) {
             super.onPostExecute(events);
+            if(events == null){
+                Events noEvents = new Events("No Events", "");
+                mEventsArrayList.add(noEvents);
+            }
+            if(events != null){
             String title = "";
             String time = "";
             Log.i("eventsLength", String.valueOf(events.length));
@@ -221,7 +227,7 @@ public class ListViewFragment extends Fragment {
                 mEventsArrayList.add(anEvent);
                 Log.i("eventAddedToArrayList", mEventsArrayList.get(i).getEventName());
 
-            }
+            }}
 
             mEventArrayAdapter.addAll(mEventsArrayList);
             //Log.i("eventsAdded", mEventsArrayList.get(i).getEventName());
@@ -233,5 +239,5 @@ public class ListViewFragment extends Fragment {
 
 
 
-
+    //http://api.eventful.com/json/events/search?app_key=vc57D4w3FMkJfN4r&category=sports&keywords=tigers||lions||redwings&location=42.335533,-83.0491771&within=30&units=mi&date=2014110300-2014111000
 }

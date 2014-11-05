@@ -44,7 +44,12 @@ public class Events {
     }
 
     public String getTime(){
-        String time = dateAndTime.substring(11);
+        String time = "00:00";
+        if(!dateAndTime.equals("")){
+            time = dateAndTime.substring(11);
+        }
+
+
 
 /*
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
