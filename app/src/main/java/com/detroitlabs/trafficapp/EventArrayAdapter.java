@@ -35,11 +35,23 @@ public class EventArrayAdapter extends ArrayAdapter<Events>{
         Log.d("ViewCalled", "view is called");
         thisWeeksEvents = ListViewFragment.mEventsArrayList;
 
+        // Time format logic
+        String preTimeFormat = thisObject.getTime();
+        String ampm = " am";
+        int cutTimeFormat = Integer.parseInt(preTimeFormat.substring(1,3));
+        System.out.println(cutTimeFormat);
+        if (cutTimeFormat > 12) {
+            cutTimeFormat -= 12;
+            ampm = " pm";
+        }
+        String postTimeFormat = (cutTimeFormat + preTimeFormat.substring(3,6)+ ampm);
+        // End time format logic
+
         TextView eventTitle = (TextView) thisRow.findViewById(R.id.event_text);
         eventTitle.setText(thisObject.getEventName());
 
         TextView eventTime = (TextView) thisRow.findViewById(R.id.event_time);
-        eventTime.setText(thisObject.getTime());
+        eventTime.setText(postTimeFormat);
 
         return thisRow;
 
