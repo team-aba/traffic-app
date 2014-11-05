@@ -39,11 +39,14 @@ public class Events {
     }
 
     public String getTime(){
-        String time = "";
+        String time = dateAndTime.substring(10);
+
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+
+
         try{
-        Date dateTime = sdf.parse(dateAndTime);
-         time =  sdf.format(dateTime);
+        Date timeObject = sdf.parse(time);
+            time =  sdf.format(timeObject);
             Log.i("time", time);
         }
         catch (ParseException e){
