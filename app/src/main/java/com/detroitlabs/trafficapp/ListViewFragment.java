@@ -161,7 +161,7 @@ public class ListViewFragment extends Fragment {
 
         private void createEventsFromJSONData(String jsondata) throws JSONException{
 
-            final String EVENTFUL_LIST = "events";
+            final String EVENTFUL_LIST = "event";
             final String START_TIME = "start_time";
             final String EVENT_TITLE ="title";
 
