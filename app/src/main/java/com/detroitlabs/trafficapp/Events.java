@@ -1,17 +1,24 @@
 package com.detroitlabs.trafficapp;
 
+import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by BFineRocks on 11/4/14.
  */
 public class Events {
     String eventName;
-    String eventDate;
-    String eventStartTime;
+    String dateAndTime;
+    int eventDate;
+    int eventStartTime;
 
-    public Events(String eventName, String eventDate, String eventStartTime){
+    public Events(String eventName, String dateAndTime){
         this.eventName = eventName;
-        this.eventDate = eventDate;
-        this.eventStartTime = eventStartTime;
+        this.dateAndTime = dateAndTime;
+
     }
 
     public String getEventName() {
@@ -22,19 +29,31 @@ public class Events {
         this.eventName = eventName;
     }
 
-    public String getEventStartTime() {
-        return eventStartTime;
+
+    public String getStringWholeDate(){
+        return dateAndTime;
     }
 
-    public void setEventStartTime(String eventStartTime) {
-        this.eventStartTime = eventStartTime;
+    public void setStringWholeDate(String date){
+        this.dateAndTime = date;
     }
 
-    public String getEventDate() {
-        return eventDate;
+    public String getTime(){
+        String time = dateAndTime.substring(10);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+
+
+        try{
+        Date timeObject = sdf.parse(time);
+            time =  sdf.format(timeObject);
+            Log.i("time", time);
+        }
+        catch (ParseException e){
+            Log.e("Parse Exception", e.getMessage());
+        }
+
+        return time;
     }
 
-    public void setEventDate(String eventDate) {
-        this.eventDate = eventDate;
-    }
 }
