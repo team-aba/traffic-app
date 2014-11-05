@@ -28,18 +28,23 @@ import java.util.Calendar;
 public class ListViewFragment extends Fragment {
     ListView mListOfEvents;
     public static ArrayList<Events> mEventsArrayList = new ArrayList<Events>();
+    EventArrayAdapter mEventArrayAdapter;
 
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mEventArrayAdapter = new EventArrayAdapter(getActivity(), mEventsArrayList);
+    }
 
-
-/*    public static ListViewFragment newInstance(String param1, String param2) {
-        ListViewFragment fragment = new ListViewFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
+    /*    public static ListViewFragment newInstance(String param1, String param2) {
+            ListViewFragment fragment = new ListViewFragment();
+            Bundle args = new Bundle();
+            args.putString(ARG_PARAM1, param1);
+            args.putString(ARG_PARAM2, param2);
+            fragment.setArguments(args);
+            return fragment;
+        }*/
     public ListViewFragment() {
         // Required empty public constructor
     }
@@ -58,6 +63,7 @@ public class ListViewFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_list_view, container, false);
         mListOfEvents = (ListView) rootView.findViewById(R.id.list_view_of_events);
 
+        mListOfEvents.setAdapter(mEventArrayAdapter);
 
         return rootView;
     }
@@ -82,11 +88,11 @@ public class ListViewFragment extends Fragment {
     }
 
 
-    public class CheckEventsUpcoming extends AsyncTask<String, Void, Void>{
+    public class CheckEventsUpcoming extends AsyncTask<String, Void, String[][]>{
 
 
         @Override
-        protected Void doInBackground(String... strings) {
+        protected String[][] doInBackground(String... strings) {
 
             final String MALFORMED_URL_ERROR = "Malformed Url Exception";
             final String IO_EXCEPTION_ERROR = "IO Exception";
@@ -97,6 +103,8 @@ public class ListViewFragment extends Fragment {
 
             final String URI_BASE = "http://api.eventful.com/json/events/search?app_key=vc57D4w3FMkJfN4r&location=42.335533,-83.0491771&within=30&units=mi";
             final String PARAM_DATE = "date";
+
+            Log.i("date", strings[0]);
 
             try {
 
@@ -150,7 +158,7 @@ public class ListViewFragment extends Fragment {
             }
             try {
 
-                createEventsFromJSONData(jsonString);
+                return createEventsFromJSONData(jsonString);
             }catch(JSONException e){
                 Log.e(JSON_EXCEPTION_ERROR, e.getMessage());
             }
@@ -159,38 +167,60 @@ public class ListViewFragment extends Fragment {
         }
 
 
-        private void createEventsFromJSONData(String jsondata) throws JSONException{
+        private String[][] createEventsFromJSONData(String jsondata) throws JSONException{
 
             final String EVENTFUL_LIST = "event";
             final String START_TIME = "start_time";
             final String EVENT_TITLE ="title";
 
+
             JSONObject jsonObject = new JSONObject(jsondata);
-            JSONArray arrayOfEvents = jsonObject.getJSONArray(EVENTFUL_LIST);
+            Log.i("jsonData", jsondata);
+            JSONObject eventsObject = jsonObject.getJSONObject("events");
+            Log.i("eventsData", eventsObject.toString());
+            JSONArray arrayOfEvents = eventsObject.getJSONArray(EVENTFUL_LIST);
+            String[][] eventsArray = new String[2][arrayOfEvents.length()];
             for(int i = 0; i < arrayOfEvents.length(); i++){
 
                 String title;
                 String date;
-
+                int j = 0;
                 JSONObject eventObject = arrayOfEvents.getJSONObject(i);
                 title = eventObject.getString(EVENT_TITLE);
+                eventsArray[j][i] = title;
+                Log.i("eventsArray", eventsArray[j][i]);
+                j++;
                 date = eventObject.getString(START_TIME);
-                Events anEvent = new Events(title, date);
-                mEventsArrayList.add(anEvent);
+                eventsArray[j][i] = date;
 
+
+            }
+            return  eventsArray;
+
+        }
+
+
+
+        @Override
+        protected void onPostExecute(String[][] events) {
+            super.onPostExecute(events);
+            String title = "";
+            String time = "";
+            for(int i = 0; i < events.length; i++) {
+                int j = 0;
+                title = events[j][i];
+                Log.i("eventTitle", title);
+                time = events[j+1][i];
+                Log.i("eventTime", time);
+
+                Events anEvent = new Events(title, time);
+                mEventsArrayList.add(anEvent);
             }
 
 
+            //Log.i("eventsAdded", mEventsArrayList.get(i).getEventName());
+
         }
-
-
-/*
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-*/
 
     }
 

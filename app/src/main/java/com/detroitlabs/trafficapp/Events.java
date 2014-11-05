@@ -44,6 +44,7 @@ public class Events {
         try{
         Date dateTime = sdf.parse(dateAndTime);
          time =  sdf.format(dateTime);
+            Log.i("time", time);
         }
         catch (ParseException e){
             Log.e("Parse Exception", e.getMessage());

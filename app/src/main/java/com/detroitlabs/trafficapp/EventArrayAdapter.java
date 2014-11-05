@@ -19,8 +19,8 @@ public class EventArrayAdapter extends ArrayAdapter<Events>{
     public ArrayList<Events> thisWeeksEvents;
 
 
-    public EventArrayAdapter(Context context, int resource, ArrayList<Events> thisWeeksEvents) {
-        super(context, resource, thisWeeksEvents);
+    public EventArrayAdapter(Context context, ArrayList<Events> thisWeeksEvents) {
+        super(context, R.layout.event_item, thisWeeksEvents);
         this.mContext = context;
     }
 
