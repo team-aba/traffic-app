@@ -1,9 +1,5 @@
 package com.detroitlabs.trafficapp;
 
-import android.util.Log;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -12,8 +8,9 @@ import java.util.Date;
 public class Events {
     String eventName;
     String dateAndTime;
-    int eventDate;
-    int eventStartTime;
+
+    Date eventDate;
+    String eventStartTime;
 
     public Events(String eventName, String dateAndTime){
         this.eventName = eventName;
@@ -38,22 +35,42 @@ public class Events {
         this.dateAndTime = date;
     }
 
+    public void setEventDate(Date date){
+        this.eventDate = date;
+    }
+
+    public void setEventStartTime(String startTime){
+        this.eventStartTime = startTime;
+    }
+
     public String getTime(){
-        String time = dateAndTime.substring(10);
+        String time = "00:00";
+        if(!dateAndTime.equals("")){
+            time = dateAndTime.substring(11);
+        }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
 
+
+/*
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        SimpleDateFormat sdfDate = new SimpleDateFormat("MM-dd-yyyy");
+        SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm a");
 
         try{
-        Date timeObject = sdf.parse(time);
-            time =  sdf.format(timeObject);
-            Log.i("time", time);
+        Date dateObject = sdf.parse(dateAndTime);
+            String dateobject = sdf.format(dateObject);
+            Date dateOnly = sdfDate.parse(dateobject);
+            setEventDate(dateOnly);
+            Date timeOnly = sdfTime.parse(dateobject);
+            time = sdfTime.format(timeOnly);
         }
         catch (ParseException e){
             Log.e("Parse Exception", e.getMessage());
         }
+*/
 
         return time;
     }
+
 
 }
