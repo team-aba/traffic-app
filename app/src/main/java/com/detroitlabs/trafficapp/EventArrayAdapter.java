@@ -38,13 +38,13 @@ public class EventArrayAdapter extends ArrayAdapter<Events>{
         // Time format logic
         String preTimeFormat = thisObject.getTime();
         String ampm = " am";
-        int cutTimeFormat = Integer.parseInt(preTimeFormat.substring(1,3));
+        Integer cutTimeFormat = Integer.parseInt(preTimeFormat.substring(0,2));
         System.out.println(cutTimeFormat);
         if (cutTimeFormat > 12) {
             cutTimeFormat -= 12;
             ampm = " pm";
         }
-        String postTimeFormat = (cutTimeFormat + preTimeFormat.substring(3,6)+ ampm);
+        String postTimeFormat = (cutTimeFormat + preTimeFormat.substring(2,5)+ ampm);
         // End time format logic
 
         TextView eventTitle = (TextView) thisRow.findViewById(R.id.event_text);
