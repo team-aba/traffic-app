@@ -27,7 +27,7 @@ import java.util.Calendar;
 
 public class ListViewFragment extends Fragment {
     ListView mListOfEvents;
-    ArrayList<Events> mEventsArrayList = new ArrayList<Events>();
+    public static ArrayList<Events> mEventsArrayList = new ArrayList<Events>();
 
 
 
@@ -46,6 +46,12 @@ public class ListViewFragment extends Fragment {
 
 
     @Override
+    public void onStart() {
+        super.onStart();
+        updateEvents();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -57,24 +63,14 @@ public class ListViewFragment extends Fragment {
     }
 
     public void updateEvents(){
-        String dateToRange = "";
          Calendar currentCal = Calendar.getInstance();
-
-
-        String todayDate = yearToday + monthToday + today + "00";
-
+         String todayDate = getDateInString(currentCal);
         currentCal.add(Calendar.WEEK_OF_YEAR, 1);
+        String dateIn1Week = getDateInString(currentCal);
 
-        String year1Week = String.valueOf(currentCal.get(Calendar.YEAR));
-        String day1Week = String.valueOf(currentCal.get(Calendar.DATE));
-        String month1Week = String.valueOf(currentCal.get(Calendar.MONTH));
+        String dateToRange = todayDate + "-" + dateIn1Week;
 
-        String dateIn1Week = year1Week + month1Week + day1Week + "00";
-
-        dateToRange = todayDate + "-" + dateIn1Week;
-
-
-
+        new CheckEventsUpcoming().execute(dateToRange);
 
     }
 
@@ -82,6 +78,7 @@ public class ListViewFragment extends Fragment {
         String yearToday = String.valueOf(calendar.get(Calendar.YEAR));
         String today = String.valueOf(calendar.get(Calendar.DATE));
         String monthToday = String.valueOf(calendar.get(Calendar.MONTH));
+        return yearToday + monthToday + today + "00";
     }
 
 
