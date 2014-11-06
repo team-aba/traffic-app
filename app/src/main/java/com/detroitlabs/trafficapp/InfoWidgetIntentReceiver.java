@@ -17,6 +17,8 @@ public class InfoWidgetIntentReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(WIDGET_UPDATE_ACTION)) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.traffic_info_widget);
 
+            views.setTextViewText(R.id.trafficAnswerWidget, "Refreshed");
+
             TrafficInfoWidgetProvider.pushWidgetUpdate(context, views);
         }
     }
