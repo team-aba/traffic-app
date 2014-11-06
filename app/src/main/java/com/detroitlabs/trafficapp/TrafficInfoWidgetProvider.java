@@ -28,6 +28,8 @@ public class TrafficInfoWidgetProvider extends AppWidgetProvider {
             intent.setAction(WIDGET_UPDATE_ACTION);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+            views.setOnClickPendingIntent(R.id.checkForTraffic, pendingIntent);
+
             pushWidgetUpdate(context, views);
 
         }
