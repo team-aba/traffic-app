@@ -1,6 +1,7 @@
 package com.detroitlabs.trafficapp;
 
 import android.app.Fragment;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -73,18 +74,19 @@ public class ListViewFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                try{
+                try {
                     String geoUri = "geo:42.335416,-83.049161";
+                    Intent mapApp = new Intent(Intent.ACTION_SEND);
+                    mapApp.setData(Uri.parse(geoUri));
+                startActivity(mapApp);
+                }catch(ActivityNotFoundException e) {
+
+                    String urlForMap = "https://www.google.com/maps/place/@42.335416,-83.049161,17z/data=!5m1!1e1";
+
+                    Intent goToGoogleMaps = new Intent(Intent.ACTION_VIEW);
+                    goToGoogleMaps.setData(Uri.parse(urlForMap));
+                    startActivity(goToGoogleMaps);
                 }
-
-                String urlForMap = "https://www.google.com/maps/place/@42.335416,-83.049161,17z/data=!5m1!1e1";
-
-                Intent goToGoogleMaps = new Intent(Intent.ACTION_VIEW);
-                goToGoogleMaps.setData(Uri.parse(urlForMap));
-                startActivity(goToGoogleMaps);
-
-
-
 
             }
         });
