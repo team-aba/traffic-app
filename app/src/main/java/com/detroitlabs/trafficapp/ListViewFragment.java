@@ -72,10 +72,18 @@ public class ListViewFragment extends Fragment {
         mListOfEvents.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String urlForMap = "https://www.google.com/maps/@42.330522,-83.046867/data=!5m1!1e1";
 
-                Intent goToGoogleMaps = new Intent(Intent.ACTION_VIEW, Uri.parse(urlForMap));
+                try{
+                    String geoUri = "geo:42.335416,-83.049161";
+                }
+
+                String urlForMap = "https://www.google.com/maps/place/@42.335416,-83.049161,17z/data=!5m1!1e1";
+
+                Intent goToGoogleMaps = new Intent(Intent.ACTION_VIEW);
+                goToGoogleMaps.setData(Uri.parse(urlForMap));
                 startActivity(goToGoogleMaps);
+
+
 
 
             }
