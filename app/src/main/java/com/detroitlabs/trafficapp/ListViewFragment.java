@@ -1,6 +1,7 @@
 package com.detroitlabs.trafficapp;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -66,6 +69,17 @@ public class ListViewFragment extends Fragment {
         mListOfEvents = (ListView) rootView.findViewById(R.id.list_view_of_events);
 
         mListOfEvents.setAdapter(mEventArrayAdapter);
+        mListOfEvents.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String urlForMap = "https://www.google.com/maps/@42.330522,-83.046867/data=!5m1!1e1";
+
+                Intent goToGoogleMaps = new Intent(Intent.ACTION_VIEW, Uri.parse(urlForMap));
+                startActivity(goToGoogleMaps);
+
+
+            }
+        });
 
         return rootView;
     }
