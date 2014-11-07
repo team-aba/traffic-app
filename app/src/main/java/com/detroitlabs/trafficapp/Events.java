@@ -48,15 +48,23 @@ public class Events {
 
     }
 
+    public Date getEventDate(){
+        return eventDate;
+    }
+
     public void setEventStartTime(String startTime){
         this.eventStartTime = startTime;
-        setEventDate();
+
     }
+
 
     public String getTime(){
         String time = "00:00";
         if(!dateAndTime.equals("")){
             time = dateAndTime.substring(11);
+
+            setEventDate();
+            Log.i("SetEventDateCalled", "called");
         }
 
 
