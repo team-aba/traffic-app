@@ -76,7 +76,7 @@ public class ListViewFragment extends Fragment {
 
                 try {
                     String geoUri = "geo:42.335416,-83.049161";
-                    Intent mapApp = new Intent(Intent.ACTION_SEND);
+                    Intent mapApp = new Intent(Intent.ACTION_VIEW);
                     mapApp.setData(Uri.parse(geoUri));
                 startActivity(mapApp);
                 }catch(ActivityNotFoundException e) {
