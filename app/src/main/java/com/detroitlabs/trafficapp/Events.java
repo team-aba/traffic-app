@@ -1,5 +1,9 @@
 package com.detroitlabs.trafficapp;
 
+import android.util.Log;
+
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -8,7 +12,6 @@ import java.util.Date;
 public class Events {
     String eventName;
     String dateAndTime;
-
     Date eventDate;
     String eventStartTime;
 
@@ -35,12 +38,19 @@ public class Events {
         this.dateAndTime = date;
     }
 
-    public void setEventDate(Date date){
-        this.eventDate = date;
+    public void setEventDate(){
+        DateFormat dateFormat = DateFormat.getDateInstance();
+        try{
+        this.eventDate = dateFormat.parse(dateAndTime);}
+        catch(ParseException e){
+            Log.e("Parse Date Exception", e.getMessage());
+        }
+
     }
 
     public void setEventStartTime(String startTime){
         this.eventStartTime = startTime;
+        setEventDate();
     }
 
     public String getTime(){
@@ -50,24 +60,6 @@ public class Events {
         }
 
 
-
-/*
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-        SimpleDateFormat sdfDate = new SimpleDateFormat("MM-dd-yyyy");
-        SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm a");
-
-        try{
-        Date dateObject = sdf.parse(dateAndTime);
-            String dateobject = sdf.format(dateObject);
-            Date dateOnly = sdfDate.parse(dateobject);
-            setEventDate(dateOnly);
-            Date timeOnly = sdfTime.parse(dateobject);
-            time = sdfTime.format(timeOnly);
-        }
-        catch (ParseException e){
-            Log.e("Parse Exception", e.getMessage());
-        }
-*/
 
         return time;
     }
