@@ -259,6 +259,15 @@ public class ListViewFragment extends Fragment {
 
         }
 
+        public void sortEventsByDate(ArrayList<Events> arrayListOfEvents){
+            Events eventHolder = null;
+
+            for(int i = 0; i < arrayListOfEvents.size(); i++){
+                
+            }
+
+        }
+
     }
 
 

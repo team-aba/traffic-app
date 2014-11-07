@@ -2,9 +2,10 @@ package com.detroitlabs.trafficapp;
 
 import android.util.Log;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Created by BFineRocks on 11/4/14.
@@ -12,7 +13,7 @@ import java.util.Date;
 public class Events {
     String eventName;
     String dateAndTime;
-    Date eventDate;
+    DateTime eventDate;
     String eventStartTime;
 
     public Events(String eventName, String dateAndTime){
@@ -39,18 +40,17 @@ public class Events {
     }
 
     public void setEventDate(){
-        DateFormat dateFormat = DateFormat.getDateInstance();
-        try{
-        this.eventDate = dateFormat.parse(dateAndTime);}
-        catch(ParseException e){
-            Log.e("Parse Date Exception", e.getMessage());
-        }
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
+        dateTimeFormatter.withZone(DateTimeZone.forOffsetHours(-5));
+       eventDate = dateTimeFormatter.parseDateTime(getStringWholeDate());
+
+        Log.i("eventDate", eventDate.toString());
     }
-
-    public Date getEventDate(){
+/*
+    public DateTime getEventDate(){
         return eventDate;
-    }
+    }*/
 
     public void setEventStartTime(String startTime){
         this.eventStartTime = startTime;
