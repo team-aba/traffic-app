@@ -263,7 +263,7 @@ public class ListViewFragment extends Fragment {
             Events eventHolder = null;
 
             for(int i = 0; i < arrayListOfEvents.size(); i++){
-                
+
             }
 
         }
