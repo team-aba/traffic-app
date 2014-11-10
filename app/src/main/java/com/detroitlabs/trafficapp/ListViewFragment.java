@@ -27,7 +27,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 
 public class ListViewFragment extends Fragment {
@@ -260,16 +259,6 @@ public class ListViewFragment extends Fragment {
         }
 
 
-        public void sortEventsByDate(ArrayList<Events> theseEvents){
-            Events eventHolder = null;
-            Date eventsDate = null;
-
-
-            for(int i = 0; i < theseEvents.size(); i++){
-                eventHolder = theseEvents.get(i)
-            }
-
-        }
 
     }
 
