@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import org.joda.time.DateTimeComparator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +27,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class ListViewFragment extends Fragment {
@@ -244,9 +245,9 @@ public class ListViewFragment extends Fragment {
             for(int i = 0; i < events.length; i++) {
                 int j = 0;
                 title = events[i][j];
-        //        Log.i("eventTitle", title);
+               Log.i("eventTitle", title);
                 time = events[i][j+1];
-        //        Log.i("eventTime", time);
+               Log.i("eventTime", time);
 
                 Events anEvent = new Events(title, time);
                 anEvent.setEventDate();
@@ -256,37 +257,30 @@ public class ListViewFragment extends Fragment {
 
 
             }}
-            mEventsArrayList = sortEventsByDate(mEventsArrayList);
+
+            Collections.sort(mEventsArrayList, EventSorter);
 
             mEventArrayAdapter.addAll(mEventsArrayList);
             //Log.i("eventsAdded", mEventsArrayList.get(i).getEventName());
 
         }
 
-        public ArrayList<Events> sortEventsByDate(ArrayList<Events> eventsArrayList){
-            Events eventHolder = null;
-            Events eventCompare = null;
-            DateTimeComparator dateTimeComparator = DateTimeComparator.getInstance();
 
-            for(int i = 0; i < eventsArrayList.size()-1; i++){
-                eventHolder = eventsArrayList.get(i);
-                eventCompare = eventsArrayList.get(i+1);
-                int result = dateTimeComparator.compare(eventHolder.getEventDate(),
-                        eventCompare.getEventDate());
+        public Comparator<Events> EventSorter = new Comparator<Events>() {
+            @Override
+            public int compare(Events events, Events events2) {
+                String dateEvent = events.getStringWholeDate();
+                String dateEvent2 = events2.getStringWholeDate();
 
-                if(result == 1){
-                   eventsArrayList.set(i, eventCompare);
-                    eventsArrayList.set(i + 1, eventHolder);
-                }
-
+                return dateEvent.compareTo(dateEvent2);
             }
-            return eventsArrayList;
-        }
+        };
+
 
     }
 
 
 
 
-   
+
 }
