@@ -1,7 +1,5 @@
 package com.detroitlabs.trafficapp;
 
-import android.util.Log;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -45,12 +43,11 @@ public class Events {
         dateTimeFormatter.withZone(DateTimeZone.forOffsetHours(-5));
        eventDate = dateTimeFormatter.parseDateTime(getStringWholeDate());
 
-        Log.i("eventDate", eventDate.toString());
+       // Log.i("eventDate", eventDate.toString());
     }
-/*
     public DateTime getEventDate(){
         return eventDate;
-    }*/
+    }
 
     public void setEventStartTime(String startTime){
         this.eventStartTime = startTime;
@@ -63,8 +60,6 @@ public class Events {
         if(!dateAndTime.equals("")){
             time = dateAndTime.substring(11);
 
-            setEventDate();
-            Log.i("SetEventDateCalled", "called");
         }
 
 

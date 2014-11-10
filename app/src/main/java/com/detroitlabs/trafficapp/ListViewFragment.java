@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import org.joda.time.DateTimeComparator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,8 +79,8 @@ public class ListViewFragment extends Fragment {
                     String geoUri = "geo:42.335416,-83.049161";
                     Intent mapApp = new Intent(Intent.ACTION_VIEW);
                     mapApp.setData(Uri.parse(geoUri));
-                startActivity(mapApp);
-                }catch(ActivityNotFoundException e) {
+                    startActivity(mapApp);
+                } catch (ActivityNotFoundException e) {
 
                     String urlForMap = "https://www.google.com/maps/place/@42.335416,-83.049161,17z/data=!5m1!1e1";
 
@@ -243,29 +244,43 @@ public class ListViewFragment extends Fragment {
             for(int i = 0; i < events.length; i++) {
                 int j = 0;
                 title = events[i][j];
-                Log.i("eventTitle", title);
+        //        Log.i("eventTitle", title);
                 time = events[i][j+1];
-                Log.i("eventTime", time);
+        //        Log.i("eventTime", time);
 
                 Events anEvent = new Events(title, time);
+                anEvent.setEventDate();
                 mEventsArrayList.add(anEvent);
                 Log.i("eventAddedToArrayList", mEventsArrayList.get(i).getEventName());
 
 
+
             }}
+            mEventsArrayList = sortEventsByDate(mEventsArrayList);
 
             mEventArrayAdapter.addAll(mEventsArrayList);
             //Log.i("eventsAdded", mEventsArrayList.get(i).getEventName());
 
         }
 
-        public void sortEventsByDate(ArrayList<Events> arrayListOfEvents){
+        public ArrayList<Events> sortEventsByDate(ArrayList<Events> eventsArrayList){
             Events eventHolder = null;
+            Events eventCompare = null;
+            DateTimeComparator dateTimeComparator = DateTimeComparator.getInstance();
 
-            for(int i = 0; i < arrayListOfEvents.size(); i++){
+            for(int i = 0; i < eventsArrayList.size()-1; i++){
+                eventHolder = eventsArrayList.get(i);
+                eventCompare = eventsArrayList.get(i+1);
+                int result = dateTimeComparator.compare(eventHolder.getEventDate(),
+                        eventCompare.getEventDate());
+
+                if(result == 1){
+                   eventsArrayList.set(i, eventCompare);
+                    eventsArrayList.set(i + 1, eventHolder);
+                }
 
             }
-
+            return eventsArrayList;
         }
 
     }
@@ -273,5 +288,5 @@ public class ListViewFragment extends Fragment {
 
 
 
-    //http://api.eventful.com/json/events/search?app_key=vc57D4w3FMkJfN4r&category=sports&keywords=tigers||lions||redwings&location=42.335533,-83.0491771&within=30&units=mi&date=2014110300-2014111000
+   
 }
