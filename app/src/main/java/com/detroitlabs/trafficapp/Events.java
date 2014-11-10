@@ -1,6 +1,9 @@
 package com.detroitlabs.trafficapp;
 
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Created by BFineRocks on 11/4/14.
@@ -8,8 +11,7 @@ import java.util.Date;
 public class Events {
     String eventName;
     String dateAndTime;
-
-    Date eventDate;
+    DateTime eventDate;
     String eventStartTime;
 
     public Events(String eventName, String dateAndTime){
@@ -35,39 +37,32 @@ public class Events {
         this.dateAndTime = date;
     }
 
-    public void setEventDate(Date date){
-        this.eventDate = date;
+    public void setEventDate(){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+
+        dateTimeFormatter.withZone(DateTimeZone.forOffsetHours(-5));
+       eventDate = dateTimeFormatter.parseDateTime(getStringWholeDate());
+
+       // Log.i("eventDate", eventDate.toString());
+    }
+    public DateTime getEventDate(){
+        return eventDate;
     }
 
     public void setEventStartTime(String startTime){
         this.eventStartTime = startTime;
+
     }
+
 
     public String getTime(){
         String time = "00:00";
         if(!dateAndTime.equals("")){
             time = dateAndTime.substring(11);
+
         }
 
 
-
-/*
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-        SimpleDateFormat sdfDate = new SimpleDateFormat("MM-dd-yyyy");
-        SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm a");
-
-        try{
-        Date dateObject = sdf.parse(dateAndTime);
-            String dateobject = sdf.format(dateObject);
-            Date dateOnly = sdfDate.parse(dateobject);
-            setEventDate(dateOnly);
-            Date timeOnly = sdfTime.parse(dateobject);
-            time = sdfTime.format(timeOnly);
-        }
-        catch (ParseException e){
-            Log.e("Parse Exception", e.getMessage());
-        }
-*/
 
         return time;
     }

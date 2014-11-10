@@ -27,6 +27,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class ListViewFragment extends Fragment {
@@ -76,10 +78,10 @@ public class ListViewFragment extends Fragment {
 
                 try {
                     String geoUri = "geo:42.335416,-83.049161";
-                    Intent mapApp = new Intent(Intent.ACTION_SEND);
+                    Intent mapApp = new Intent(Intent.ACTION_VIEW);
                     mapApp.setData(Uri.parse(geoUri));
-                startActivity(mapApp);
-                }catch(ActivityNotFoundException e) {
+                    startActivity(mapApp);
+                } catch (ActivityNotFoundException e) {
 
                     String urlForMap = "https://www.google.com/maps/place/@42.335416,-83.049161,17z/data=!5m1!1e1";
 
@@ -243,25 +245,42 @@ public class ListViewFragment extends Fragment {
             for(int i = 0; i < events.length; i++) {
                 int j = 0;
                 title = events[i][j];
-                Log.i("eventTitle", title);
+               Log.i("eventTitle", title);
                 time = events[i][j+1];
-                Log.i("eventTime", time);
+               Log.i("eventTime", time);
 
                 Events anEvent = new Events(title, time);
+                anEvent.setEventDate();
                 mEventsArrayList.add(anEvent);
                 Log.i("eventAddedToArrayList", mEventsArrayList.get(i).getEventName());
 
+
+
             }}
+
+            Collections.sort(mEventsArrayList, EventSorter);
 
             mEventArrayAdapter.addAll(mEventsArrayList);
             //Log.i("eventsAdded", mEventsArrayList.get(i).getEventName());
 
         }
 
+
+        public Comparator<Events> EventSorter = new Comparator<Events>() {
+            @Override
+            public int compare(Events events, Events events2) {
+                String dateEvent = events.getStringWholeDate();
+                String dateEvent2 = events2.getStringWholeDate();
+
+                return dateEvent.compareTo(dateEvent2);
+            }
+        };
+
+
     }
 
 
 
 
-    //http://api.eventful.com/json/events/search?app_key=vc57D4w3FMkJfN4r&category=sports&keywords=tigers||lions||redwings&location=42.335533,-83.0491771&within=30&units=mi&date=2014110300-2014111000
+
 }
