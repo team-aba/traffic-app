@@ -32,7 +32,7 @@ public class EventArrayAdapter extends ArrayAdapter<Events>{
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View thisRow = inflater.inflate(R.layout.event_item, parent, false);
         Events thisObject = getItem(position);
-        Log.d("ViewCalled", "view is called");
+   //     Log.d("ViewCalled", "view is called");
         thisWeeksEvents = ListViewFragment.mEventsArrayList;
 
         // Format logic
@@ -51,7 +51,7 @@ public class EventArrayAdapter extends ArrayAdapter<Events>{
         if (eventFormat.length() > maxEventLength)
             eventFormat = (eventFormat.substring(0,maxEventLength)+"...");
         // End format logic
-
+      //  Log.i("eventTime",thisObject.getEventDate().toString());
 
         TextView eventTitle = (TextView) thisRow.findViewById(R.id.event_text);
         eventTitle.setText(eventFormat);
