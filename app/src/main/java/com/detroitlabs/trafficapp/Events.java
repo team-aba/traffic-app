@@ -59,16 +59,9 @@ public class Events {
         String time = "00:00";
         if(!dateAndTime.equals("")){
             time = dateAndTime.substring(11);
-<<<<<<< HEAD
-        }
-
-=======
 
         }
 
-
-
->>>>>>> c4ed53a5b8924a3752789bdff4c84e32d629b05a
         return time;
     }
 
