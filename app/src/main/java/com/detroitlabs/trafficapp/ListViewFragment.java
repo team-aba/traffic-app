@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +27,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -35,6 +35,7 @@ public class ListViewFragment extends Fragment {
     ListView mListOfEvents;
     public static ArrayList<Events> mEventsArrayList = new ArrayList<Events>();
     EventArrayAdapter mEventArrayAdapter;
+    String eventDay;
 
 
     @Override
@@ -71,6 +72,8 @@ public class ListViewFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_list_view, container, false);
         mListOfEvents = (ListView) rootView.findViewById(R.id.list_view_of_events);
 
+        //View headerView = (View) inflater.inflate(R.layout.day_of_week, null);
+        //mListOfEvents.addHeaderView(headerView);
         mListOfEvents.setAdapter(mEventArrayAdapter);
         mListOfEvents.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -97,21 +100,22 @@ public class ListViewFragment extends Fragment {
     }
 
     public void updateEvents(){
-         Calendar currentCal = Calendar.getInstance();
-         String todayDate = getDateInString(currentCal);
-        currentCal.add(Calendar.WEEK_OF_YEAR, 1);
-        String dateIn1Week = getDateInString(currentCal);
+         DateTime dateTime = DateTime.now();
+         String todayDate = getDateInString(dateTime);
+        dateTime.plusDays(7);
+        String dateIn1Week = getDateInString(dateTime);
 
         String dateToRange = todayDate + "-" + dateIn1Week;
+        Log.i("dateRange", dateToRange);
 
         new CheckEventsUpcoming().execute(dateToRange);
 
     }
 
-    public String getDateInString(Calendar calendar){
-        String yearToday = String.valueOf(calendar.get(Calendar.YEAR));
-        String today = String.valueOf(calendar.get(Calendar.DATE));
-        String monthToday = String.valueOf(calendar.get(Calendar.MONTH));
+    public String getDateInString(DateTime dateTime){
+        String yearToday = String.valueOf(dateTime.year());
+        String today = String.valueOf(dateTime.dayOfMonth());
+        String monthToday = String.valueOf(dateTime.monthOfYear());
         return yearToday + monthToday + today + "00";
     }
 
@@ -260,6 +264,9 @@ public class ListViewFragment extends Fragment {
 
             Collections.sort(mEventsArrayList, EventSorter);
 
+
+            setEventDay();
+
             mEventArrayAdapter.addAll(mEventsArrayList);
             //Log.i("eventsAdded", mEventsArrayList.get(i).getEventName());
 
@@ -279,6 +286,47 @@ public class ListViewFragment extends Fragment {
 
 
     }
+
+    public void setEventDay(){
+        DateTime today = DateTime.now();
+        for (int i = 0; i < mEventsArrayList.size(); i++) {
+          DateTime datetime =  mEventsArrayList.get(i).getEventDate();
+
+
+           if(datetime.equals(today)){
+               createDivider("Today");
+           }
+            else if(datetime.equals(today.plusDays(1))){
+                createDivider("Tomorrow");
+           }
+            else{
+              switch (datetime.getDayOfWeek()){
+                  case 1:
+                     createDivider("Monday");
+                  case 2:
+                      createDivider("Tuesday");
+                  case 3:
+                      createDivider("Wednesday");
+                  case 4:
+                      createDivider("Thursday");
+                  case 5:
+                      createDivider("Friday");
+                  case 6:
+                      createDivider("Saturday");
+                  case 7:
+                      createDivider("Sunday");
+              }
+           }
+        }
+    }
+
+    public void createDivider(String dayOfWeek){
+        eventDay = dayOfWeek;
+        EventHeader eventHeader = new EventHeader(eventDay);
+        mListOfEvents.setDivider(eventHeader);
+    }
+
+
 
 
 
