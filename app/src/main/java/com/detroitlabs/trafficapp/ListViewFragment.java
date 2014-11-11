@@ -1,8 +1,6 @@
 package com.detroitlabs.trafficapp;
 
 import android.app.Fragment;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,8 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import org.joda.time.DateTime;
@@ -36,6 +32,7 @@ public class ListViewFragment extends Fragment {
     ListView mListOfEvents;
     public static ArrayList<Events> mEventsArrayList = new ArrayList<Events>();
     public static List<Item> eventItems = new ArrayList<Item>();
+    ItemArrayAdapter itemArrayAdapter;
     EventArrayAdapter mEventArrayAdapter;
     String eventDay;
 
@@ -73,10 +70,11 @@ public class ListViewFragment extends Fragment {
 
         View rootView =  inflater.inflate(R.layout.fragment_list_view, container, false);
         mListOfEvents = (ListView) rootView.findViewById(R.id.list_view_of_events);
+        mListOfEvents.setAdapter(itemArrayAdapter);
 
         //View headerView = (View) inflater.inflate(R.layout.day_of_week, null);
         //mListOfEvents.addHeaderView(headerView);
-        mListOfEvents.setAdapter(mEventArrayAdapter);
+ /*       mListOfEvents.setAdapter(mEventArrayAdapter);
         mListOfEvents.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -96,7 +94,7 @@ public class ListViewFragment extends Fragment {
                 }
 
             }
-        });
+        });*/
 
         return rootView;
     }
@@ -242,6 +240,7 @@ public class ListViewFragment extends Fragment {
             super.onPostExecute(events);
             if(events == null){
                 Events noEvents = new Events("No Events", "");
+                noEvents.setIsNoEvent(true);
                 mEventsArrayList.add(noEvents);
 
             }
@@ -264,9 +263,10 @@ public class ListViewFragment extends Fragment {
             }}
 
             Collections.sort(mEventsArrayList, EventSorter);
+            sortEventsAndAddToItemArray(mEventsArrayList);
 
 
-            mEventArrayAdapter.addAll(mEventsArrayList);
+     //       mEventArrayAdapter.addAll(mEventsArrayList);
             //Log.i("eventsAdded", mEventsArrayList.get(i).getEventName());
 
         }
@@ -274,8 +274,17 @@ public class ListViewFragment extends Fragment {
         public void sortEventsAndAddToItemArray(ArrayList<Events> eventArray){
 
             for(int i = 0; i < eventArray.size(); i++){
-
+                Events event = eventArray.get(i);
+                if(!event.isNoEvent()){
+                   eventItems.add(createDayOfWeekHeader(getDayOfWeek(event)));
+                    eventItems.add(event);
+                }
+                else{
+                    eventItems.add(createDayOfWeekHeader("No Events Found"));
+                }
             }
+            itemArrayAdapter = new ItemArrayAdapter(getActivity(), eventItems);
+            mListOfEvents.setAdapter(itemArrayAdapter);
 
         }
 
@@ -286,7 +295,7 @@ public class ListViewFragment extends Fragment {
 
         public String getDayOfWeek(Events event){
             String weekDay = "";
-            if(!event.getEventName().equals("No Events")) {
+          //  if(!event.isNoEvent()) {
                 switch (event.getEventDate().getDayOfWeek()) {
                     case 1:
                         weekDay = "Monday";
@@ -310,7 +319,7 @@ public class ListViewFragment extends Fragment {
                         weekDay = "Sunday";
                         break;
                 }
-            }
+        //    }
             return weekDay;
         }
 

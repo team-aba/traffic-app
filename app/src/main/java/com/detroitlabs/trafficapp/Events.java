@@ -63,7 +63,7 @@ public class Events implements Item {
 
     }
 
-    public void isNoEvent(boolean isEvent){
+    public void setIsNoEvent(boolean isEvent){
         isNoEvent = isEvent;
     }
 
