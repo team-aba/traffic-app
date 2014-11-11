@@ -3,6 +3,7 @@ package com.detroitlabs.trafficapp;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -324,8 +325,10 @@ public class ListViewFragment extends Fragment {
     public void createDivider(String dayOfWeek){
         eventDay = dayOfWeek;
         EventHeader eventHeader = new EventHeader(eventDay);
+        Canvas canvas = new Canvas();
+        eventHeader.draw(canvas);
         mListOfEvents.setDivider(eventHeader);
-        mListOfEvents.setDividerHeight(10);
+        mListOfEvents.setDividerHeight(50);
     }
 
 

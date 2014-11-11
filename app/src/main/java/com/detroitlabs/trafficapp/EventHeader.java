@@ -21,8 +21,9 @@ public class EventHeader extends Drawable {
         this.eventHeaderText = eventHeaderText;
 
         paint = new Paint();
-        paint.setColor(Color.YELLOW);
+        paint.setColor(Color.BLACK);
         paint.setTextSize(22f);
+
         paint.setAntiAlias(true);
         paint.setFakeBoldText(true);
         paint.setStyle(Style.FILL);
