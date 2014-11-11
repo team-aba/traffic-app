@@ -1,5 +1,11 @@
 package com.detroitlabs.trafficapp;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+
+import com.detroitlabs.trafficapp.ItemArrayAdapter.RowType;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -8,11 +14,14 @@ import org.joda.time.format.DateTimeFormatter;
 /**
  * Created by BFineRocks on 11/4/14.
  */
-public class Events {
-    String eventName;
-    String dateAndTime;
-    DateTime eventDate;
-    String eventStartTime;
+public class Events implements Item {
+    private String eventName;
+    private String dateAndTime;
+    private DateTime eventDate;
+    private String eventStartTime;
+    private String formattedName;
+    private String formattedTime;
+    private boolean isNoEvent;
 
     public Events(String eventName, String dateAndTime){
         this.eventName = eventName;
@@ -54,6 +63,14 @@ public class Events {
 
     }
 
+    public void isNoEvent(boolean isEvent){
+        isNoEvent = isEvent;
+    }
+
+    public boolean isNoEvent(){
+        return isNoEvent;
+    }
+
 
     public String getTime(){
         String time = "00:00";
@@ -65,5 +82,43 @@ public class Events {
         return time;
     }
 
+    public void formatNameAndTimeOfEvent(){
+        String preTimeFormat = getTime();
+        String ampm = "am";
+        Integer cutTimeFormat = Integer.parseInt(preTimeFormat.substring(0,2));
+        System.out.println(cutTimeFormat);
+        if (cutTimeFormat > 12) {
+            cutTimeFormat -= 12;
+            ampm = "pm";
+        }
+        formattedTime = (cutTimeFormat + preTimeFormat.substring(2,5)+ ampm);
 
+        String eventFormat = getEventName();
+        int maxEventLength = 60;
+        if (eventFormat.length() > maxEventLength)
+            formattedName = (eventFormat.substring(0,maxEventLength)+"...");
+    }
+
+
+    @Override
+    public int getViewType() {
+        return RowType.LIST_ITEM.ordinal();
+    }
+
+    @Override
+    public View getView(LayoutInflater inflater, View viewConverter) {
+        View view;
+        if(viewConverter == null){
+            view = (View) inflater.inflate(R.layout.event_item, null);
+        }else{
+            view = viewConverter;
+        }
+        TextView textView = (TextView) view.findViewById(R.id.event_text);
+        TextView timeView = (TextView) view.findViewById(R.id.event_time);
+
+        textView.setText(formattedName);
+        timeView.setText(formattedTime);
+
+        return view;
+    }
 }

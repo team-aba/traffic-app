@@ -3,7 +3,6 @@ package com.detroitlabs.trafficapp;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,11 +29,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 
 public class ListViewFragment extends Fragment {
     ListView mListOfEvents;
     public static ArrayList<Events> mEventsArrayList = new ArrayList<Events>();
+    public static List<Item> eventItems = new ArrayList<Item>();
     EventArrayAdapter mEventArrayAdapter;
     String eventDay;
 
@@ -242,7 +243,7 @@ public class ListViewFragment extends Fragment {
             if(events == null){
                 Events noEvents = new Events("No Events", "");
                 mEventsArrayList.add(noEvents);
-                createDivider("Today");
+
             }
             if(events != null){
             String title = "";
@@ -260,18 +261,57 @@ public class ListViewFragment extends Fragment {
                 mEventsArrayList.add(anEvent);
                 Log.i("eventAddedToArrayList", mEventsArrayList.get(i).getEventName());
 
-
-
             }}
 
             Collections.sort(mEventsArrayList, EventSorter);
 
 
-            setEventDay();
-
             mEventArrayAdapter.addAll(mEventsArrayList);
             //Log.i("eventsAdded", mEventsArrayList.get(i).getEventName());
 
+        }
+
+        public void sortEventsAndAddToItemArray(ArrayList<Events> eventArray){
+
+            for(int i = 0; i < eventArray.size(); i++){
+
+            }
+
+        }
+
+        public DayOfWeekHeader createDayOfWeekHeader(String dayofWeek){
+
+           return new DayOfWeekHeader(dayofWeek);
+        }
+
+        public String getDayOfWeek(Events event){
+            String weekDay = "";
+            if(!event.getEventName().equals("No Events")) {
+                switch (event.getEventDate().getDayOfWeek()) {
+                    case 1:
+                        weekDay = "Monday";
+                        break;
+                    case 2:
+                        weekDay = "Tuesday";
+                        break;
+                    case 3:
+                        weekDay = "Wednesday";
+                        break;
+                    case 4:
+                        weekDay = "Thursday";
+                        break;
+                    case 5:
+                        weekDay = "Friday";
+                        break;
+                    case 6:
+                        weekDay = "Saturday";
+                        break;
+                    case 7:
+                        weekDay = "Sunday";
+                        break;
+                }
+            }
+            return weekDay;
         }
 
 
@@ -289,47 +329,8 @@ public class ListViewFragment extends Fragment {
 
     }
 
-    public void setEventDay(){
-        DateTime today = DateTime.now();
-        for (int i = 0; i < mEventsArrayList.size(); i++) {
-          DateTime datetime =  mEventsArrayList.get(i).getEventDate();
 
 
-           if(datetime == null ||datetime.equals(today)){
-               createDivider("Today");
-           }
-            else if(datetime.equals(today.plusDays(1))){
-                createDivider("Tomorrow");
-           }
-            else{
-              switch (datetime.getDayOfWeek()){
-                  case 1:
-                     createDivider("Monday");
-                  case 2:
-                      createDivider("Tuesday");
-                  case 3:
-                      createDivider("Wednesday");
-                  case 4:
-                      createDivider("Thursday");
-                  case 5:
-                      createDivider("Friday");
-                  case 6:
-                      createDivider("Saturday");
-                  case 7:
-                      createDivider("Sunday");
-              }
-           }
-        }
-    }
-
-    public void createDivider(String dayOfWeek){
-        eventDay = dayOfWeek;
-        EventHeader eventHeader = new EventHeader(eventDay);
-        Canvas canvas = new Canvas();
-        eventHeader.draw(canvas);
-        mListOfEvents.setDivider(eventHeader);
-        mListOfEvents.setDividerHeight(50);
-    }
 
 
 
