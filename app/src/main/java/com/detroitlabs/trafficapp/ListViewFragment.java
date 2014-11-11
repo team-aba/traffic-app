@@ -102,8 +102,8 @@ public class ListViewFragment extends Fragment {
     public void updateEvents(){
          DateTime dateTime = DateTime.now();
          String todayDate = getDateInString(dateTime);
-        dateTime.plusDays(7);
-        String dateIn1Week = getDateInString(dateTime);
+      //  dateTime.plusMonths(3);
+        String dateIn1Week = getDateInString(dateTime.plusMonths(3));
 
         String dateToRange = todayDate + "-" + dateIn1Week;
         Log.i("dateRange", dateToRange);

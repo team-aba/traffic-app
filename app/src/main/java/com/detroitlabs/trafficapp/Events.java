@@ -26,6 +26,7 @@ public class Events implements Item {
     public Events(String eventName, String dateAndTime){
         this.eventName = eventName;
         this.dateAndTime = dateAndTime;
+        formatNameAndTimeOfEvent();
 
     }
 
@@ -95,8 +96,19 @@ public class Events implements Item {
 
         String eventFormat = getEventName();
         int maxEventLength = 60;
-        if (eventFormat.length() > maxEventLength)
-            formattedName = (eventFormat.substring(0,maxEventLength)+"...");
+        if (eventFormat.length() > maxEventLength){
+            formattedName = (eventFormat.substring(0,maxEventLength)+"...");}
+        else{
+            formattedName = eventFormat;
+        }
+    }
+
+    public String getFormattedName(){
+        return formattedName;
+    }
+
+    public String getFormattedTime(){
+        return formattedTime;
     }
 
 
@@ -116,8 +128,8 @@ public class Events implements Item {
         TextView textView = (TextView) view.findViewById(R.id.event_text);
         TextView timeView = (TextView) view.findViewById(R.id.event_time);
 
-        textView.setText(formattedName);
-        timeView.setText(formattedTime);
+        textView.setText(getFormattedName());
+        timeView.setText(getFormattedTime());
 
         return view;
     }
