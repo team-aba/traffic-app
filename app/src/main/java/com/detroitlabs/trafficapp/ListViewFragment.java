@@ -113,9 +113,9 @@ public class ListViewFragment extends Fragment {
     }
 
     public String getDateInString(DateTime dateTime){
-        String yearToday = String.valueOf(dateTime.year());
-        String today = String.valueOf(dateTime.dayOfMonth());
-        String monthToday = String.valueOf(dateTime.monthOfYear());
+        String yearToday = String.valueOf(dateTime.getYear());
+        String today = String.valueOf(dateTime.getDayOfMonth());
+        String monthToday = String.valueOf(dateTime.getMonthOfYear());
         return yearToday + monthToday + today + "00";
     }
 
@@ -241,6 +241,7 @@ public class ListViewFragment extends Fragment {
             if(events == null){
                 Events noEvents = new Events("No Events", "");
                 mEventsArrayList.add(noEvents);
+                createDivider("Today");
             }
             if(events != null){
             String title = "";
@@ -293,7 +294,7 @@ public class ListViewFragment extends Fragment {
           DateTime datetime =  mEventsArrayList.get(i).getEventDate();
 
 
-           if(datetime.equals(today)){
+           if(datetime == null ||datetime.equals(today)){
                createDivider("Today");
            }
             else if(datetime.equals(today.plusDays(1))){
@@ -324,6 +325,7 @@ public class ListViewFragment extends Fragment {
         eventDay = dayOfWeek;
         EventHeader eventHeader = new EventHeader(eventDay);
         mListOfEvents.setDivider(eventHeader);
+        mListOfEvents.setDividerHeight(10);
     }
 
 
