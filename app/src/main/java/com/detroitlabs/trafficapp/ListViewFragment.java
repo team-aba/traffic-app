@@ -262,7 +262,9 @@ public class ListViewFragment extends Fragment {
                 mEventsArrayList.add(anEvent);
                 Log.i("eventAddedToArrayList", mEventsArrayList.get(i).getEventName());
 
-            }}
+            }
+                TrafficNotification.makeAlarms(getActivity());
+        }
 
             Collections.sort(mEventsArrayList, EventSorter);
             sortEventsAndAddToItemArray(mEventsArrayList);

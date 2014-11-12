@@ -1,8 +1,10 @@
 package com.detroitlabs.trafficapp;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
@@ -34,6 +36,18 @@ public class TrafficNotification {
         // Vibrate if vibrate is enabled
         notification.defaults |= Notification.DEFAULT_VIBRATE;
         notificationManager.notify(0, notification);
+    }
 
+    public static void makeAlarms(Context context){
+        long triggerAlarmTime = (System.currentTimeMillis()+15000);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        //ListViewFragment.mEventsArrayList
+        Intent alarmIntent = new Intent(context, BroadcastNotification.class);
+        alarmIntent.putExtra("Title", "This Event");
+
+        PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAlarmTime, alarmPendingIntent);
     }
 }
+
