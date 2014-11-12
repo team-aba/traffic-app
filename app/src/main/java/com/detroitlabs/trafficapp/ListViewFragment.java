@@ -303,7 +303,7 @@ public class ListViewFragment extends Fragment {
             String comma = ", ";
             String weekDay = "";
             String eventMonth = event.getEventDate().toString(dateFormat);
-            String eventDate = String.valueOf(event.getEventDate().getDayOfWeek());
+            String eventDate = " " + String.valueOf(event.getEventDate().getDayOfWeek());
             String eventYear = String.valueOf(event.getEventDate().getYear());
                 switch (event.getEventDate().getDayOfWeek()) {
                     case 1:
