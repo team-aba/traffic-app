@@ -34,6 +34,9 @@
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/traffic_widget" />
             </receiver>
+
+        <service
+            android:name=".WidgetService"/>
     </application>
 
 </manifest>

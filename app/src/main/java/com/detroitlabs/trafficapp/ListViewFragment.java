@@ -246,7 +246,7 @@ public class ListViewFragment extends Fragment {
                 mEventsArrayList.add(noEvents);
 
             }
-            if(events != null){
+            else {
             String title = "";
             String time = "";
             Log.i("eventsLength", String.valueOf(events.length));
