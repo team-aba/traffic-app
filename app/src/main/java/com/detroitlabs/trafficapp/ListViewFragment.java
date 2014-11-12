@@ -1,8 +1,6 @@
 package com.detroitlabs.trafficapp;
 
 import android.app.Fragment;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,10 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,15 +25,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 
 public class ListViewFragment extends Fragment {
     ListView mListOfEvents;
     public static ArrayList<Events> mEventsArrayList = new ArrayList<Events>();
+    public static List<Item> eventItems = new ArrayList<Item>();
+    ItemArrayAdapter itemArrayAdapter;
     EventArrayAdapter mEventArrayAdapter;
+    String eventDay;
 
 
     @Override
@@ -70,8 +72,11 @@ public class ListViewFragment extends Fragment {
 
         View rootView =  inflater.inflate(R.layout.fragment_list_view, container, false);
         mListOfEvents = (ListView) rootView.findViewById(R.id.list_view_of_events);
+        mListOfEvents.setAdapter(itemArrayAdapter);
 
-        mListOfEvents.setAdapter(mEventArrayAdapter);
+        //View headerView = (View) inflater.inflate(R.layout.day_of_week, null);
+        //mListOfEvents.addHeaderView(headerView);
+ /*       mListOfEvents.setAdapter(mEventArrayAdapter);
         mListOfEvents.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -91,27 +96,28 @@ public class ListViewFragment extends Fragment {
                 }
 
             }
-        });
+        });*/
 
         return rootView;
     }
 
     public void updateEvents(){
-         Calendar currentCal = Calendar.getInstance();
-         String todayDate = getDateInString(currentCal);
-        currentCal.add(Calendar.WEEK_OF_YEAR, 1);
-        String dateIn1Week = getDateInString(currentCal);
+         DateTime dateTime = DateTime.now();
+         String todayDate = getDateInString(dateTime);
+      //  dateTime.plusMonths(3);
+        String dateIn1Week = getDateInString(dateTime.plusMonths(3));
 
         String dateToRange = todayDate + "-" + dateIn1Week;
+        Log.i("dateRange", dateToRange);
 
         new CheckEventsUpcoming().execute(dateToRange);
 
     }
 
-    public String getDateInString(Calendar calendar){
-        String yearToday = String.valueOf(calendar.get(Calendar.YEAR));
-        String today = String.valueOf(calendar.get(Calendar.DATE));
-        String monthToday = String.valueOf(calendar.get(Calendar.MONTH));
+    public String getDateInString(DateTime dateTime){
+        String yearToday = String.valueOf(dateTime.getYear());
+        String today = String.valueOf(dateTime.getDayOfMonth());
+        String monthToday = String.valueOf(dateTime.getMonthOfYear());
         return yearToday + monthToday + today + "00";
     }
 
@@ -236,7 +242,9 @@ public class ListViewFragment extends Fragment {
             super.onPostExecute(events);
             if(events == null){
                 Events noEvents = new Events("No Events", "");
+                noEvents.setIsNoEvent(true);
                 mEventsArrayList.add(noEvents);
+
             }
             if(events != null){
             String title = "";
@@ -254,16 +262,73 @@ public class ListViewFragment extends Fragment {
                 mEventsArrayList.add(anEvent);
                 Log.i("eventAddedToArrayList", mEventsArrayList.get(i).getEventName());
 
-
-
             }}
 
             Collections.sort(mEventsArrayList, EventSorter);
+            sortEventsAndAddToItemArray(mEventsArrayList);
 
-            mEventArrayAdapter.addAll(mEventsArrayList);
+
+     //       mEventArrayAdapter.addAll(mEventsArrayList);
             //Log.i("eventsAdded", mEventsArrayList.get(i).getEventName());
 
         }
+
+        public void sortEventsAndAddToItemArray(ArrayList<Events> eventArray){
+
+            for(int i = 0; i < eventArray.size(); i++){
+                Events event = eventArray.get(i);
+                if(!event.isNoEvent()){
+                   eventItems.add(createDayOfWeekHeader(getDayOfWeek(event)));
+                    eventItems.add(event);
+                }
+                else{
+                    eventItems.add(createDayOfWeekHeader("No Events Found"));
+                }
+            }
+            itemArrayAdapter = new ItemArrayAdapter(getActivity(), eventItems);
+            mListOfEvents.setAdapter(itemArrayAdapter);
+
+        }
+
+        public DayOfWeekHeader createDayOfWeekHeader(String dayofWeek){
+
+           return new DayOfWeekHeader(dayofWeek);
+        }
+
+        public String getDayOfWeek(Events event){
+            DateTimeFormatter dateFormat = DateTimeFormat.forPattern("MMMM");
+            String line = " | ";
+            String comma = ", ";
+            String weekDay = "";
+            String eventMonth = event.getEventDate().toString(dateFormat);
+            String eventDate = String.valueOf(event.getEventDate().getDayOfWeek());
+            String eventYear = String.valueOf(event.getEventDate().getYear());
+                switch (event.getEventDate().getDayOfWeek()) {
+                    case 1:
+                        weekDay = "Monday";
+                        break;
+                    case 2:
+                        weekDay = "Tuesday";
+                        break;
+                    case 3:
+                        weekDay = "Wednesday";
+                        break;
+                    case 4:
+                        weekDay = "Thursday";
+                        break;
+                    case 5:
+                        weekDay = "Friday";
+                        break;
+                    case 6:
+                        weekDay = "Saturday";
+                        break;
+                    case 7:
+                        weekDay = "Sunday";
+                        break;
+                }
+            return weekDay + line + eventMonth + eventDate + comma + eventYear;
+        }
+
 
 
 
@@ -279,6 +344,11 @@ public class ListViewFragment extends Fragment {
 
 
     }
+
+
+
+
+
 
 
 
