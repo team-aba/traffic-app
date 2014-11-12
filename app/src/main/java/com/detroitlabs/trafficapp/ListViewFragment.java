@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -294,8 +296,13 @@ public class ListViewFragment extends Fragment {
         }
 
         public String getDayOfWeek(Events event){
+            DateTimeFormatter dateFormat = DateTimeFormat.forPattern("MMMM");
+            String line = " | ";
+            String comma = ", ";
             String weekDay = "";
-          //  if(!event.isNoEvent()) {
+            String eventMonth = event.getEventDate().toString(dateFormat);
+            String eventDate = String.valueOf(event.getEventDate().getDayOfWeek());
+            String eventYear = String.valueOf(event.getEventDate().getYear());
                 switch (event.getEventDate().getDayOfWeek()) {
                     case 1:
                         weekDay = "Monday";
@@ -319,9 +326,9 @@ public class ListViewFragment extends Fragment {
                         weekDay = "Sunday";
                         break;
                 }
-        //    }
-            return weekDay;
+            return weekDay + line + eventMonth + eventDate + comma + eventYear;
         }
+
 
 
 
