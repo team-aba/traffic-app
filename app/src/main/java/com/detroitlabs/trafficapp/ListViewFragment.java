@@ -1,6 +1,8 @@
 package com.detroitlabs.trafficapp;
 
 import android.app.Fragment;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import org.joda.time.DateTime;
@@ -74,9 +78,7 @@ public class ListViewFragment extends Fragment {
         mListOfEvents = (ListView) rootView.findViewById(R.id.list_view_of_events);
         mListOfEvents.setAdapter(itemArrayAdapter);
 
-        //View headerView = (View) inflater.inflate(R.layout.day_of_week, null);
-        //mListOfEvents.addHeaderView(headerView);
- /*       mListOfEvents.setAdapter(mEventArrayAdapter);
+
         mListOfEvents.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -96,7 +98,7 @@ public class ListViewFragment extends Fragment {
                 }
 
             }
-        });*/
+        });
 
         return rootView;
     }
@@ -303,7 +305,7 @@ public class ListViewFragment extends Fragment {
             String comma = ", ";
             String weekDay = "";
             String eventMonth = event.getEventDate().toString(dateFormat);
-            String eventDate = String.valueOf(event.getEventDate().getDayOfWeek());
+            String eventDate = " " + String.valueOf(event.getEventDate().getDayOfWeek());
             String eventYear = String.valueOf(event.getEventDate().getYear());
                 switch (event.getEventDate().getDayOfWeek()) {
                     case 1:
