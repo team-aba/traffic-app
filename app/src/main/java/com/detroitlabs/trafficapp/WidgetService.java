@@ -122,12 +122,13 @@ public class WidgetService extends IntentService {
 
             }}
 
-        RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(), R.layout.traffic_info_widget);
-
+        RemoteViews views = new RemoteViews(getPackageName(), R.layout.traffic_info_widget);
         views.setTextViewText(R.id.trafficAnswerWidget, mEventsArrayList.get(0).getEventName());
 
-        AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(R.id.trafficAnswerWidget, views);
 
+        ComponentName widget = new ComponentName(this, TrafficInfoWidgetProvider.class);
+
+        AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(widget, views);
 
     }
 
