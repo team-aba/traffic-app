@@ -99,7 +99,7 @@ public class ListViewFragment extends Fragment {
     public void updateEvents(){
          Calendar currentCal = Calendar.getInstance();
          String todayDate = getDateInString(currentCal);
-        currentCal.add(Calendar.WEEK_OF_MONTH, 8);
+        currentCal.add(Calendar.WEEK_OF_YEAR, 1);
         String dateIn1Week = getDateInString(currentCal);
 
         String dateToRange = todayDate + "-" + dateIn1Week;
@@ -264,6 +264,7 @@ public class ListViewFragment extends Fragment {
             //Log.i("eventsAdded", mEventsArrayList.get(i).getEventName());
 
         }
+
 
 
         public Comparator<Events> EventSorter = new Comparator<Events>() {

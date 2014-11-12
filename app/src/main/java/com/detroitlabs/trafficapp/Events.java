@@ -62,8 +62,6 @@ public class Events {
 
         }
 
-
-
         return time;
     }
 
