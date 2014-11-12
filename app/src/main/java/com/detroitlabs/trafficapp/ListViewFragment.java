@@ -265,7 +265,7 @@ public class ListViewFragment extends Fragment {
                 Log.i("eventAddedToArrayList", mEventsArrayList.get(i).getEventName());
 
             }
-                TrafficNotification.makeAlarms(getActivity());
+                BroadcastNotification.makeAlarms(getActivity());
         }
 
             Collections.sort(mEventsArrayList, EventSorter);
