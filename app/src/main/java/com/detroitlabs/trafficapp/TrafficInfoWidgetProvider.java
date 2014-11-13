@@ -24,9 +24,10 @@ public class TrafficInfoWidgetProvider extends AppWidgetProvider {
         for (int i = 0; i < appWidgetIds.length; i++) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.traffic_info_widget);
 
-            Intent intent = new Intent();
+            Intent intent = new Intent(context, WidgetService.class);
             intent.setAction(WIDGET_UPDATE_ACTION);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            //PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             views.setOnClickPendingIntent(R.id.checkForTraffic, pendingIntent);
 
@@ -34,6 +35,8 @@ public class TrafficInfoWidgetProvider extends AppWidgetProvider {
 
         }
     }
+
+
 
     public static void pushWidgetUpdate(Context context, RemoteViews remoteViews) {
         ComponentName myWidget = new ComponentName(context, TrafficInfoWidgetProvider.class);
