@@ -31,18 +31,18 @@ public class BroadcastNotification extends BroadcastReceiver {
     }
 
     public static void makeAlarms(Context context){
-        long triggerAlarmTime = (System.currentTimeMillis()+150);
-        String thingy = String.valueOf(ListViewFragment.mEventsArrayList.get(0).getEventDate());
-        thingy = thingy.substring(0,10);
-        thingy = thingy + " " + String.valueOf(ListViewFragment.mEventsArrayList.get(0).getFormattedTime());
-        thingy = String.valueOf(DateTime.parse(thingy, DateTimeFormat.forPattern("yyyy MM dd H mmaa")));
+        //long triggerAlarmTime = (System.currentTimeMillis()+150);
+        String parseTimeForMillis = String.valueOf(ListViewFragment.mEventsArrayList.get(0).getEventDate());
+        parseTimeForMillis = parseTimeForMillis.substring(0,10);
+        parseTimeForMillis = parseTimeForMillis + " " + String.valueOf(ListViewFragment.mEventsArrayList.get(0).getFormattedTime());
 
+        DateTime triggerAlarmTime = (DateTime.parse(parseTimeForMillis, DateTimeFormat.forPattern("yyyy-MM-dd H:mmaa")));
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         Intent alarmIntent = new Intent(context, BroadcastNotification.class);
         alarmIntent.putExtra("Title", "This Event");
 
         PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAlarmTime, alarmPendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAlarmTime.getMillis(), alarmPendingIntent);
     }
 }
