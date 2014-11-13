@@ -10,15 +10,16 @@
         android:id="@+id/trafficAnswerWidget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="5dp"
-        android:text="hello world"/>
+        android:gravity="center_horizontal|center_vertical"
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:padding="5dp"/>
 
     <Button
         android:id="@+id/checkForTraffic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="Refresh"/>
+        android:text="Check for Traffic"/>
 
 </RelativeLayout>

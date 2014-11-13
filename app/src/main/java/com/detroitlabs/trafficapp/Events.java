@@ -18,7 +18,6 @@ public class Events implements Item {
     private String eventName;
     private String dateAndTime;
     private DateTime eventDate;
-    private String eventStartTime;
     private String formattedName;
     private String formattedTime;
     private boolean isNoEvent;
@@ -26,8 +25,8 @@ public class Events implements Item {
     public Events(String eventName, String dateAndTime){
         this.eventName = eventName;
         this.dateAndTime = dateAndTime;
-        formatNameAndTimeOfEvent();
-
+        formatNameOfEvent();
+        formatTimeOfEvent();
     }
 
     public String getEventName() {
@@ -37,7 +36,6 @@ public class Events implements Item {
     public void setEventName(String eventName) {
         this.eventName = eventName;
     }
-
 
     public String getStringWholeDate(){
         return dateAndTime;
@@ -52,16 +50,9 @@ public class Events implements Item {
 
         dateTimeFormatter.withZone(DateTimeZone.forOffsetHours(-5));
        eventDate = dateTimeFormatter.parseDateTime(getStringWholeDate());
-
-       // Log.i("eventDate", eventDate.toString());
     }
     public DateTime getEventDate(){
         return eventDate;
-    }
-
-    public void setEventStartTime(String startTime){
-        this.eventStartTime = startTime;
-
     }
 
     public void setIsNoEvent(boolean isEvent){
@@ -72,18 +63,15 @@ public class Events implements Item {
         return isNoEvent;
     }
 
-
     public String getTime(){
         String time = "00:00";
         if(!dateAndTime.equals("")){
             time = dateAndTime.substring(11);
-
         }
-
         return time;
     }
 
-    public void formatNameAndTimeOfEvent(){
+    public void formatTimeOfEvent(){
         String preTimeFormat = getTime();
         String ampm = "am";
         Integer cutTimeFormat = Integer.parseInt(preTimeFormat.substring(0,2));
@@ -93,7 +81,9 @@ public class Events implements Item {
             ampm = "pm";
         }
         formattedTime = (cutTimeFormat + preTimeFormat.substring(2,5)+ ampm);
+    }
 
+    public void formatNameOfEvent(){
         String eventFormat = getEventName();
         int maxEventLength = 60;
         if (eventFormat.length() > maxEventLength){
@@ -110,7 +100,6 @@ public class Events implements Item {
     public String getFormattedTime(){
         return formattedTime;
     }
-
 
     @Override
     public int getViewType() {
