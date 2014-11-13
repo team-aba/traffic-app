@@ -22,8 +22,6 @@ public class MainActivity extends Activity {
         getFragmentManager().beginTransaction()
                 .add(R.id.container, new ListViewFragment())
                 .commit();
-
-        TrafficNotification.generate(this, "Hello World");
     }
 
 
