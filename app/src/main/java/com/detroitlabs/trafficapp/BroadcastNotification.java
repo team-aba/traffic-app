@@ -8,7 +8,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import org.joda.time.DateTime;
 import org.joda.time.JodaTimePermission;
+import org.joda.time.format.DateTimeFormat;
 
 public class BroadcastNotification extends BroadcastReceiver {
 
@@ -30,6 +32,10 @@ public class BroadcastNotification extends BroadcastReceiver {
 
     public static void makeAlarms(Context context){
         long triggerAlarmTime = (System.currentTimeMillis()+150);
+        String thingy = String.valueOf(ListViewFragment.mEventsArrayList.get(0).getEventDate());
+        thingy = thingy.substring(0,10);
+        thingy = thingy + " " + String.valueOf(ListViewFragment.mEventsArrayList.get(0).getFormattedTime());
+        thingy = String.valueOf(DateTime.parse(thingy, DateTimeFormat.forPattern("yyyy MM dd H mmaa")));
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
