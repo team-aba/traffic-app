@@ -39,7 +39,7 @@ public class ListViewFragment extends Fragment {
     public static ArrayList<Events> mEventsArrayList = new ArrayList<Events>();
     public static List<Item> eventItems = new ArrayList<Item>();
     ItemArrayAdapter itemArrayAdapter;
-    EventArrayAdapter mEventArrayAdapter;
+
     String eventDay;
 
 
@@ -47,7 +47,7 @@ public class ListViewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         updateEvents();
-        mEventArrayAdapter = new EventArrayAdapter(getActivity(), mEventsArrayList);
+
     }
 
     /*    public static ListViewFragment newInstance(String param1, String param2) {
