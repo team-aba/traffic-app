@@ -39,36 +39,25 @@ public class ListViewFragment extends Fragment {
     public static ArrayList<Events> mEventsArrayList = new ArrayList<Events>();
     public static List<Item> eventItems = new ArrayList<Item>();
     ItemArrayAdapter itemArrayAdapter;
-    EventArrayAdapter mEventArrayAdapter;
-    String eventDay;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         updateEvents();
-        mEventArrayAdapter = new EventArrayAdapter(getActivity(), mEventsArrayList);
+
     }
 
-    /*    public static ListViewFragment newInstance(String param1, String param2) {
-            ListViewFragment fragment = new ListViewFragment();
-            Bundle args = new Bundle();
-            args.putString(ARG_PARAM1, param1);
-            args.putString(ARG_PARAM2, param2);
-            fragment.setArguments(args);
-            return fragment
-        }*/
     public ListViewFragment() {
         // Required empty public constructor
     }
 
-
+/*
     @Override
     public void onStart() {
         super.onStart();
       //  updateEvents();
 
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,42 +67,32 @@ public class ListViewFragment extends Fragment {
         mListOfEvents = (ListView) rootView.findViewById(R.id.list_view_of_events);
         mListOfEvents.setAdapter(itemArrayAdapter);
 
-
         mListOfEvents.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
                 try {
                     String geoUri = "geo:42.335416,-83.049161";
                     Intent mapApp = new Intent(Intent.ACTION_VIEW);
                     mapApp.setData(Uri.parse(geoUri));
                     startActivity(mapApp);
                 } catch (ActivityNotFoundException e) {
-
                     String urlForMap = "https://www.google.com/maps/place/@42.335416,-83.049161,17z/data=!5m1!1e1";
-
                     Intent goToGoogleMaps = new Intent(Intent.ACTION_VIEW);
                     goToGoogleMaps.setData(Uri.parse(urlForMap));
                     startActivity(goToGoogleMaps);
                 }
-
             }
         });
-
         return rootView;
     }
 
     public void updateEvents(){
-         DateTime dateTime = DateTime.now();
-         String todayDate = getDateInString(dateTime);
-      //  dateTime.plusMonths(3);
+        DateTime dateTime = DateTime.now();
+        String todayDate = getDateInString(dateTime);
         String dateIn1Week = getDateInString(dateTime.plusMonths(3));
-
         String dateToRange = todayDate + "-" + dateIn1Week;
-        Log.i("dateRange", dateToRange);
 
         new CheckEventsUpcoming().execute(dateToRange);
-
     }
 
     public String getDateInString(DateTime dateTime){
@@ -125,7 +104,6 @@ public class ListViewFragment extends Fragment {
 
 
     public class CheckEventsUpcoming extends AsyncTask<String, Void, String[][]>{
-
 
         @Override
         protected String[][] doInBackground(String... strings) {
@@ -144,7 +122,6 @@ public class ListViewFragment extends Fragment {
             Log.i("date", strings[0]);
 
             try {
-
                 Uri aUri = Uri.parse(URI_BASE).buildUpon()
                         .appendQueryParameter(PARAM_DATE, strings[0])
                         .build();
@@ -172,7 +149,6 @@ public class ListViewFragment extends Fragment {
                 }
 
                 jsonString = stringBuffer.toString();
-
 
             }catch(MalformedURLException e){
                 Log.e(MALFORMED_URL_ERROR, e.getMessage());
@@ -210,11 +186,8 @@ public class ListViewFragment extends Fragment {
             final String START_TIME = "start_time";
             final String EVENT_TITLE ="title";
 
-
             JSONObject jsonObject = new JSONObject(jsondata);
-            Log.i("jsonData", jsondata);
             JSONObject eventsObject = jsonObject.getJSONObject("events");
-            Log.i("eventsData", eventsObject.toString());
             JSONArray arrayOfEvents = eventsObject.getJSONArray(EVENTFUL_LIST);
             String[][] eventsArray = new String[arrayOfEvents.length()][2];
 
@@ -230,13 +203,9 @@ public class ListViewFragment extends Fragment {
                 j++;
                 date = eventObject.getString(START_TIME);
                 eventsArray[i][j] = date;
-
-
             }
             return  eventsArray;
-
         }
-
 
 
         @Override
@@ -246,35 +215,22 @@ public class ListViewFragment extends Fragment {
                 Events noEvents = new Events("No Events", "");
                 noEvents.setIsNoEvent(true);
                 mEventsArrayList.add(noEvents);
-
             }
             else {
             String title = "";
             String time = "";
-            Log.i("eventsLength", String.valueOf(events.length));
             for(int i = 0; i < events.length; i++) {
                 int j = 0;
                 title = events[i][j];
-               Log.i("eventTitle", title);
                 time = events[i][j+1];
-               Log.i("eventTime", time);
-
                 Events anEvent = new Events(title, time);
                 anEvent.setEventDate();
                 mEventsArrayList.add(anEvent);
-                Log.i("eventAddedToArrayList", mEventsArrayList.get(i).getEventName());
-
             }
                 BroadcastNotification.makeAlarms(getActivity());
         }
-
             Collections.sort(mEventsArrayList, EventSorter);
             sortEventsAndAddToItemArray(mEventsArrayList);
-
-
-     //       mEventArrayAdapter.addAll(mEventsArrayList);
-            //Log.i("eventsAdded", mEventsArrayList.get(i).getEventName());
-
         }
 
         public void sortEventsAndAddToItemArray(ArrayList<Events> eventArray){
@@ -291,12 +247,10 @@ public class ListViewFragment extends Fragment {
             }
             itemArrayAdapter = new ItemArrayAdapter(getActivity(), eventItems);
             mListOfEvents.setAdapter(itemArrayAdapter);
-
         }
 
-        public DayOfWeekHeader createDayOfWeekHeader(String dayofWeek){
-
-           return new DayOfWeekHeader(dayofWeek);
+        public DayOfWeekHeader createDayOfWeekHeader(String dayOfWeek){
+           return new DayOfWeekHeader(dayOfWeek);
         }
 
         public String getDayOfWeek(Events event){
@@ -334,8 +288,6 @@ public class ListViewFragment extends Fragment {
         }
 
 
-
-
         public Comparator<Events> EventSorter = new Comparator<Events>() {
             @Override
             public int compare(Events events, Events events2) {
@@ -346,16 +298,6 @@ public class ListViewFragment extends Fragment {
             }
         };
 
-
     }
-
-
-
-
-
-
-
-
-
 
 }
