@@ -225,6 +225,7 @@ public class ListViewFragment extends Fragment {
                 time = events[i][j+1];
                 Events anEvent = new Events(title, time);
                 anEvent.setEventDate();
+                Log.i("EventInfo", anEvent.getEventName() + " " + anEvent.getEventDate());
                 mEventsArrayList.add(anEvent);
             }
                 BroadcastNotification.makeAlarms(getActivity());
@@ -259,7 +260,7 @@ public class ListViewFragment extends Fragment {
             String comma = ", ";
             String weekDay = "";
             String eventMonth = event.getEventDate().toString(dateFormat);
-            String eventDate = " " + String.valueOf(event.getEventDate().getDayOfWeek());
+            String eventDate = " " + String.valueOf(event.getEventDate().getDayOfMonth());
             String eventYear = String.valueOf(event.getEventDate().getYear());
                 switch (event.getEventDate().getDayOfWeek()) {
                     case 1:
